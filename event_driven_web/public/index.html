@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+
+    <!-- Ensure that everything scales appropriately on a mobile device -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <!-- Let's borrow a cool looking Font from Google -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="container">
+        <div class="actions">
+            <a href="#" class="js_create_game">Create Game</a>
+            <a href="#" class="js_show_join_form">Join Game</a>
+        </div>
+        <div class="host">
+            <div class="game_details"></div>
+        </div>
+        <div class="player">
+            <div class="join_form">
+                <input class="js_game_id" type="text" placeholder="Game ID" />
+                <input class="js_name" type="text" placeholder="Name" />
+                <a href="#" class="js_join_game">Join</a>
+            </div>
+        </div>
+        <ul class="players"></ul>
+    </div>
+
+    <!-- Include JQuery -->
+    <script src="/libs/jquery-2.0.2.min.js"></script>
+
+    <!-- If Socket.IO is used with Express, then the /socket.io/ path will
+        serve the proper Socket.IO javascript files used by the browser -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- This is our game logic -->
+    <script src="/libs/main.js"></script>
+
+</body>
+</html>

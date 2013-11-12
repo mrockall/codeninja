@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Code Ninja - Building a Multiplayer Game in the Browser</title>
+
+		<meta name="description" content="Slides for the CodeNinja talk about building a multiplayer game in the browser using Node.JS, Sockets.io and BackboneJS.">
+		<meta name="author" content="Mike Rockall">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/mike.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides" data-transition="concave">
+				<section data-state="title_slide">
+					<h2>Building a Multiplayer Game in the Browser</h2>
+				</section>
+
+				<section>
+					<section>
+						<h2>#0</h2>
+						<h2>Introduction</h2>
+					</section>
+
+					<section>
+						<h2>How this will work.</h2>
+						<p>We'll take this is a couple of stages..</p>
+						<p>..In each stage we will <em>explore some concepts</em> and then see <em>how it looks in code</em>.</p>
+						<p>By the end, we'll have a fully working multiplayer game!</p>
+					</section>
+
+					<section>
+						<h2>Who is this aimed at?</h2>
+						<img width="750" height="300" src="lib/images/aimed_at.png" alt="Who is this aimed at?">
+					</section>
+
+					<section>
+						<h2>Github</h2>
+						<p>All the code for these slides and the code used throughout the presentation is available on Github.</p>
+						<a href="http://github.com/mrockall">
+							github.com/mrockall/codeninja
+						</a>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>#1</h2>
+						<h2>Event Driven Web</h2>
+					</section>
+					<section>
+						<h2>How the Web Works</h2>
+						<img width="960" height="500" src="lib/images/how_the_web_works.png" alt="How the Web Works">
+					</section>
+					<section>
+						<h2>HTTP</h2>
+						<img width="960" height="500" src="lib/images/http.png" alt="HTTP">
+					</section>
+					<section>
+						<h2>Server &amp; Client side</h2>
+						<img width="960" height="500" src="lib/images/http.png" alt="HTTP">
+					</section>
+					<section>
+						<h2>Web Servers</h2>
+						<img width="960" height="500" src="lib/images/http.png" alt="HTTP">
+					</section>
+					<section>
+						<h2>Node.js</h2>
+
+					</section>
+					<section>
+						<h2>Sockets.io</h2>
+					</section>
+					<section>
+						<h2>Our Game</h2>
+					</section>
+					<section>
+						<h2>Using Sockets.io</h2>
+					</section>
+					<section>
+						<h2>Demo!</h2>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>#2</h2>
+						<h2>Adding some Backbone</h2>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>#3</h2>
+						<h2>Making a Game of it</h2>
+					</section>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
