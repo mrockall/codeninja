@@ -30,6 +30,13 @@ body {
 .reveal p em{
   /*color: #444;*/
 }
+.reveal blockquote{
+  padding: 40px;
+  line-height: 1.6em;
+}
+.reveal blockquote em{
+  color: #3a956b;
+}
 
 /*********************************************
  * HEADERS
