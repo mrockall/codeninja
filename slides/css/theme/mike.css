@@ -33,6 +33,7 @@ body {
 .reveal blockquote{
   padding: 40px;
   line-height: 1.6em;
+  margin-bottom: 30px;
 }
 .reveal blockquote em{
   color: #3a956b;
