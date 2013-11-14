@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+
+    <!-- Ensure that everything scales appropriately on a mobile device -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <!-- Let's borrow a cool looking Font from Google -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="container"></div>
+
+    <script id="home_screen" type="text/template">
+        <h1>Logo Picker!</h1>
+        <p>Logo Picker is a quick fire multi-player, multi-screen game. The faster you select the correct logo the more points you get!</p>
+        <div class="actions">
+            <a href="/create" class="js_create_game">Create Game</a>
+            <a href="/join" class="js_show_join_form">Join Game</a>
+        </div>
+    </script>
+
+    <script id="create_screen" type="text/template">
+        <div class="host">
+            <div class="game_details"></div>
+        </div>
+        <ul class="players"></ul>
+    </script>
+
+    <script id="join_screen" type="text/template">
+        <div class="player">
+            <div class="join_form">
+                <input class="js_game_id" type="text" placeholder="Game ID" />
+                <input class="js_name" type="text" placeholder="Name" />
+                <a href="#" class="js_join_game">Join</a>
+            </div>
+        </div>
+        <ul class="players"></ul>
+    </script>
+
+    <!-- Include JQuery -->
+    <script src="/libs/jquery-2.0.2.min.js"></script>
+    <!-- Include Underscore -->
+    <script src="/libs/underscore.js"></script>
+    <!-- Include Backbone -->
+    <script src="/libs/backbone.js"></script>
+
+    <!-- If Socket.IO is used with Express, then the /socket.io/ path will
+        serve the proper Socket.IO javascript files used by the browser -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Router -->
+    <script src="/js/router.js"></script>
+    
+    <!-- Models -->
+    <script src="/js/models/game.js"></script>
+
+    <!-- Views -->
+    <script src="/js/views/home.js"></script>
+    <script src="/js/views/create.js"></script>
+    <script src="/js/views/join.js"></script>
+
+    <!-- This is our game logic -->
+    <script src="/js/main.js"></script>
+
+</body>
+</html>
