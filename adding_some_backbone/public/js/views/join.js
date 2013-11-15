@@ -10,10 +10,28 @@ app.Views.Join = Backbone.View.extend({
     el: "#container",
     template: _.template( $( '#join_screen' ).html() ),
 
-    render: function() {
-      //this.el is what we defined in tagName. use $el to get access to jQuery html() function
-      this.$el.html( this.template() );
+    initialize: function() {
 
+    },
+
+    events: {
+      'click .js_join_game': 'join_game'
+    },
+
+    render: function() {
+      this.$el.html( this.template() );
       return this;
+    },
+
+    join_game: function(ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+
+      var player_data = {
+          playerName: this.$el.find(".js_name").val(),
+          gameId: this.$el.find(".js_game_id").val()
+      }
+      io.socket.emit("player:join_game", player_data);
     }
+
 });

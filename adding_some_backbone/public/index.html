@@ -27,7 +27,7 @@
 
     <script id="create_screen" type="text/template">
         <div class="host">
-            <div class="game_details"></div>
+            <div class="game_details">Creating Game</div>
         </div>
         <ul class="players"></ul>
     </script>
@@ -40,7 +40,10 @@
                 <a href="#" class="js_join_game">Join</a>
             </div>
         </div>
-        <ul class="players"></ul>
+    </script>
+
+    <script id="waiting_screen" type="text/template">
+        <h3>Waiting</h3>
     </script>
 
     <!-- Include JQuery -->
@@ -56,14 +59,19 @@
 
     <!-- Router -->
     <script src="/js/router.js"></script>
-    
+
     <!-- Models -->
     <script src="/js/models/game.js"></script>
+    <script src="/js/models/player.js"></script>
+
+    <!-- Collections -->
+    <script src="/js/collections/players.js"></script>
 
     <!-- Views -->
     <script src="/js/views/home.js"></script>
     <script src="/js/views/create.js"></script>
     <script src="/js/views/join.js"></script>
+    <script src="/js/views/waiting.js"></script>
 
     <!-- This is our game logic -->
     <script src="/js/main.js"></script>
