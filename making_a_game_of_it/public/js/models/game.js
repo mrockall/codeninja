@@ -4,8 +4,13 @@ if(_.isUndefined(app.Models)) app.Models = {};
 
 /**
  * Game Model
+ * This model holds all the game information and the logic
+ * for interacting with the game socket.
  */
 app.Models.Game = Backbone.Model.extend({
+
+  players_per_room: 2,
+
   defaults: {
     socket_id: 0,
     role: ''
@@ -17,6 +22,7 @@ app.Models.Game = Backbone.Model.extend({
     io.socket.on('connected', this.onConnected );
     io.socket.on('host:new_game_created', this.onNewGameCreated );
     io.socket.on('player:joined_room', this.playerJoinedRoom );
+    io.socket.on('game:start_countdown', this.beginGameCountdown );
   },
 
   onConnected: function() {
@@ -43,12 +49,18 @@ app.Models.Game = Backbone.Model.extend({
         name: data.playerName,
         socket: data.mySocketId
       });
+
+      if(this.Players.length == this.players_per_room){
+        console.log("== Room limit reached, starting game!");
+
+        io.socket.emit('host:start_countdown', this.get('game_id'));
+      }
     } else {
       app.Router.navigate('waiting', {trigger: true});
     }
   },
 
-  gameCountdown: function() {
-    console.log("== Time to begin the game!");
+  beginGameCountdown: function() {
+    app.Router.navigate('game', {trigger: true});
   }
 });

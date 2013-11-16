@@ -30,7 +30,8 @@ exports.initGame = function(sio, socket){
     gameSocket.emit('connected', { message: "You are connected!" });
 
     // Host Events
-    gameSocket.on('host:create_game', hostCreateNewGame); // hostCreateNewGame
+    gameSocket.on('host:create_game', hostCreateNewGame);
+    gameSocket.on('host:start_countdown', hostStartCountdown);
 
     // Player Events
     gameSocket.on('player:join_game', playerJoinGame);
@@ -62,6 +63,26 @@ function hostCreateNewGame() {
 
     console.log("=== Host, Socket " + this.id + " has created game #" + this_game_id);
 
+};
+
+/*
+ * Two players have joined. Alert the host!
+ * @param gameId The game ID / room ID
+ */
+function hostStartCountdown(gameId) {
+    var sock = this;
+    var data = {
+        mySocketId : sock.id,
+        gameId : gameId
+    };
+    
+    console.log("All Players Present. Preparing game...");
+    io.sockets.in(data.gameId).emit('game:start_countdown', data);
+}
+
+function hostStartGame(gameId) {
+    console.log('Game Started.');
+    sendRoundData(gameId, 1);
 };
 
 
