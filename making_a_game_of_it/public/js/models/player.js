@@ -8,6 +8,7 @@ if(_.isUndefined(app.Models)) app.Models = {};
 app.Models.Player = Backbone.Model.extend({
   defaults: {
     name: '',
-    socket: ''
+    socket: '',
+    score: 0
   }
 });

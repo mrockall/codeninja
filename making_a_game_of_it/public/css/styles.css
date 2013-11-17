@@ -198,6 +198,22 @@ h3{
     margin: 15px 15px 0 0;
     text-align: right;
 }
+.score_cards{
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+.score_cards li{
+    font-size: 20px;
+    margin: 10px 0;
+}
+.score_cards li .score{
+    min-width: 50px;
+}
 
 /* #Game Screen - Player
 ================================================== */

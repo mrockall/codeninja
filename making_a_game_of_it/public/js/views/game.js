@@ -20,8 +20,9 @@ app.Views.Game = Backbone.View.extend({
     },
 
     render: function() {
-      if(app.Game.get('role') == 'Host') {
+      if(app.Game.isHost()) {
         this.$el.html( this.host_template() );
+        this.render_player_cards();
       } else {
         this.$el.html( this.player_template() );
       }
@@ -115,5 +116,19 @@ app.Views.Game = Backbone.View.extend({
           return;
         }
       }
+    },
+
+    render_player_cards: function() {
+      var $score_cards = this.$el.find('.score_cards')
+          template = $("#player_scorecard").html();
+
+      app.Game.Players.each(_.bind(function(m, i){
+        var $li = $(template);
+        $li.addClass('sckt_' + m.get('socket'));
+        $li.find('.name').text(m.get('name'));
+        $li.find('.score').text(m.get('score'));
+
+        $score_cards.append($li);
+      }, this));
     }
 });
