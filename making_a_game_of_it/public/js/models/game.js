@@ -9,21 +9,25 @@ if(_.isUndefined(app.Models)) app.Models = {};
  */
 app.Models.Game = Backbone.Model.extend({
 
-  players_per_room: 2,
+  players_per_room: 1,
 
   defaults: {
     socket_id: 0,
-    role: ''
+    role: '',
+    current_round: 0
   },
 
   initialize: function() {
-    _.bindAll(this, 'onConnected', 'onNewGameCreated', 'playerJoinedRoom');
+    _.bindAll(this, 'onConnected', 'onNewGameCreated', 'playerJoinedRoom', 'newRoundData');
     
     io.socket.on('connected', this.onConnected );
     io.socket.on('host:new_game_created', this.onNewGameCreated );
     io.socket.on('player:joined_room', this.playerJoinedRoom );
     io.socket.on('game:start_countdown', this.beginGameCountdown );
+    io.socket.on('game:new_round_data', this.newRoundData )
   },
+
+  isHost: function() { return this.get('role') == 'Host'; },
 
   onConnected: function() {
     this.set('socket_id', io.socket.socket.sessionid);
@@ -35,6 +39,7 @@ app.Models.Game = Backbone.Model.extend({
 
     this.set('role', "Host");
     this.set('game_id', data.game_id);
+    this.set('current_round', 0);
 
     this.Players = new app.Collections.Players();
 
@@ -61,6 +66,16 @@ app.Models.Game = Backbone.Model.extend({
   },
 
   beginGameCountdown: function() {
-    app.Router.navigate('game', {trigger: true});
+    app.Router.navigate('game', {trigger: true, replace: false});
+  },
+
+  getRound: function() {
+    io.socket.emit('game:get_round', this.get('game_id'));
+  },
+
+  newRoundData: function(data) {
+    console.log("== New Round Data ", data);
+    this.trigger('game:render_round_data', data);
+    this.set('current_round', this.get('current_round' + 1));
   }
 });

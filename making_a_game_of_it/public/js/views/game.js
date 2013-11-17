@@ -4,7 +4,7 @@ if(_.isUndefined(app.Views)) app.Views = {};
 
 /**
  * Backbone.View
- * Waiting Screen
+ * The Game Screen
  */
 app.Views.Game = Backbone.View.extend({
     el: "#container",
@@ -12,6 +12,7 @@ app.Views.Game = Backbone.View.extend({
     player_template: _.template( $( '#player_game_screen' ).html() ),
 
     initialize: function() {
+      app.Game.on('game:render_round_data', this.renderRound, this);
     },
 
     render: function() {
@@ -26,7 +27,7 @@ app.Views.Game = Backbone.View.extend({
     },
 
     countdown: function() {
-      var start_time = 5,
+      var start_time = 2,
           $countdown = this.$el.find(".countdown"),
           $count = $countdown.find(".count");
 
@@ -49,7 +50,9 @@ app.Views.Game = Backbone.View.extend({
           // Stop the timer and do the callback.
           clearInterval(timer);
           this.$el.find('.countdown').fadeOut();
-          // game.IO.socket.emit('hostCountdownFinished', game.get("game_id"));
+          if(app.Game.isHost()){
+            app.Game.getRound(0);
+          }
           return;
         }
 
@@ -59,5 +62,30 @@ app.Views.Game = Backbone.View.extend({
           $count.addClass('huge');
         }, this), 100);
       }
+    },
+
+    renderRound: function(data) {
+      if(app.Game.isHost()){
+        this.render_picture(data.team);
+      } else {
+        this.$el.find(".option.tl .inner").text(data.answers[0]);
+        this.$el.find(".option.tr .inner").text(data.answers[1]);
+        this.$el.find(".option.bl .inner").text(data.answers[2]);
+        this.$el.find(".option.br .inner").text(data.answers[3]);
+      }
+    },
+
+    render_picture: function(team) {
+      var $picture = this.$el.find('.picture'),
+          w = $picture.width(),
+          h = $picture.height();
+
+      if(w > h){
+        $picture.width(h);
+      } else {
+        $picture.height(w);
+      }
+
+      $picture.css('background-image', 'url(css/img/' + team + '.png)');
     }
 });

@@ -35,6 +35,9 @@ exports.initGame = function(sio, socket){
 
     // Player Events
     gameSocket.on('player:join_game', playerJoinGame);
+
+    // Game Events
+    gameSocket.on('game:get_round', getRoundData)
 }
 
 /* *****************************
@@ -132,3 +135,67 @@ function playerJoinGame(data) {
         this.emit('error',{message: "This room does not exist."} );
     }
 }
+
+/* *****************************
+   *                           *
+   *      GAME FUNCTIONS       *
+   *                           *
+   ***************************** */
+
+/**
+ * The "game:get_round" event occurred.
+ *
+ * A game has requested some round data. We will return a random team
+ * and three other decoy teams.
+ * @return data {Object} {
+ *     playerName: {string}, // The player's name .
+ *     gameId: {integer},    // The game the player is trying to join.
+ * }
+ */
+function getRoundData(game_id) {
+    var league = teams;
+    league = shuffle(league);
+    team = league[0];
+
+    decoys = league.slice(0,4);
+    decoys = shuffle(decoys);
+
+    // Set up the data object
+    var data = {
+        team: team,
+        answers : decoys
+    };
+
+    io.sockets.in(game_id).emit('game:new_round_data', data);
+}
+
+/*
+ * Javascript implementation of Fisher-Yates shuffle algorithm
+ * http://stackoverflow.com/questions/2450954/how-to-randomize-a-javascript-array
+ */
+function shuffle(array) {
+    var currentIndex = array.length;
+    var temporaryValue;
+    var randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
+
+var teams = [
+    "Arsenal", "Aston Villa", "Cardiff City", "Chelsea", "Crystal Palace", "Everton", "Fulham",
+    "Hull City", "Liverpool", "Man City", "Man Utd", "Newcastle Utd", "Norwich", "Southampton",
+    "Stoke City", "Sunderland", "Swansea City", "Tottenham Hotspur", "West Brom", "West Ham Utd"
+];

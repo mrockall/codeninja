@@ -194,3 +194,36 @@ h3{
     right: 0;
     background-size: 100% 100%;
 }
+
+/* #Game Screen - Player
+================================================== */
+.choices{
+    height: 100%;
+    width: 100%;
+}
+.option{
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    display: table;
+    font-size: 2em;
+}
+.option.tl{
+    top: 0;
+}
+.option.tr{
+    top: 25%;
+}
+.option.bl{
+    top: 50%;
+}
+.option.br{
+    top: 75%;
+}
+.option .inner{
+    display: table-cell; 
+    vertical-align: middle; 
+    text-align: center; 
+    padding: 0 15px;
+}
