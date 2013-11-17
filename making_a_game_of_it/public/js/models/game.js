@@ -101,7 +101,9 @@ app.Models.Game = Backbone.Model.extend({
   checkAnswer: function(answer) {
     if(this.isHost()){
       if(answer.answer == this.get('round_answer')){
-        console.log("Award this many points", this.get('available_points'));
+        console.log("== Correct Answer: Award this many points", this.get('available_points'));
+        var player = this.Players.getBySocketID(answer.playerId)[0];
+        player.give_score(this.get('available_points'));
       }
 
       // Get another round going..

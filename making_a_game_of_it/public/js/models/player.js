@@ -10,5 +10,9 @@ app.Models.Player = Backbone.Model.extend({
     name: '',
     socket: '',
     score: 0
+  },
+
+  give_score: function(score) {
+    this.set('score', this.get('score') + score);
   }
 });

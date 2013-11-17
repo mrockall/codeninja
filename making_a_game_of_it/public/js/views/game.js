@@ -129,6 +129,12 @@ app.Views.Game = Backbone.View.extend({
         $li.find('.score').text(m.get('score'));
 
         $score_cards.append($li);
+
+        m.on('change:score', this.update_player_score, $li);
       }, this));
+    },
+
+    update_player_score: function(a) {
+      this.find('.score').text(a.get('score'));
     }
 });
