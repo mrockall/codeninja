@@ -121,9 +121,20 @@
 					</section>
 					<section>
 						<h2>Our Game</h2>
+						<img width="960" height="500" src="lib/images/our_game.png" alt="Our Game">
 					</section>
 					<section>
 						<h2>Using Sockets.io</h2>
+						<pre><code>
+	// Setup the web socket						
+	io.socket = io.connect();
+
+	// Send an event to the server
+	io.socket.emit("host:create_game");
+
+	// React to an event from the server
+	io.socket.on('connected', game.onConnected );
+				    </code></pre>
 					</section>
 					<section>
 						<h2>Demo!</h2>
@@ -136,28 +147,106 @@
 						<h2>Adding some Backbone</h2>
 					</section>
 					<section>
-						<h2>Problem with JS</h2>
+						<h2>The State of JS</h2>
+						<blockquote cite="http://clock.co.uk/tech-blogs/an-introduction-to-backbonejs">
+							It used to be that JS was used for fancy effects and embellishments. Now though, it's stuff that matters – proper application code as well as the niceties. That means we need to take more care to organise and structure our source.
+						</blockquote>
+						<small><a href="http://clock.co.uk/tech-blogs/an-introduction-to-backbonejs">Introduction to Backbone.js</a> - Ben Gourley</small>
 					</section>
 					<section>
-						<h2>MVC</h2>
-					</section>
-					<section>
-						<h2>Backbone</h2>
+						<h2>Backbone.js</h2>
+						<p>We will use Backbone to structure our game with <em>proven software patterns</em>, separating UI logic from business logic.</p>
+						<img width="960" height="100" src="lib/images/backbone_icons.png" alt="Backbone Icons">
+						<p>Maintainability, Compatibility, Testability, Reusability, DRY-ness, Consistency, Modularity</p>
 					</section>
 					<section>
 						<h2>Backbone.Events</h2>
+						<p class="backbone backbone_events">Events is a module that can be mixed in to any object, giving the object the ability to bind and trigger custom named events.</p>
+						<pre><code>
+	var o = {}
+	_.extend(o, Backbone.Events)
+
+	o.on('zap', function () {
+	  console.log('zapped')
+	})
+
+	o.trigger('zap')
+						</code></pre>
 					</section>
 					<section>
-						<h2>Backbone.Models</h2>
+						<h2>Backbone.Model</h2>
+						<p class="backbone backbone_model">Models are the heart of any JavaScript application, containing the interactive data as well as a large part of the logic surrounding it.</p>
+						<pre><code>
+  var Person = Backbone.Model.extend({
+    defaults: {
+    	name: '',
+    	age: 0
+    },
+    canDrive: function() {
+    	return this.get('age') > 17;
+    }
+  });
+    
+  var person = new Person({ name: "Mike", age: 23});
+  person.canDrive(); // true
+						</code></pre>
 					</section>
 					<section>
-						<h2>Backbone.Collections</h2>
+						<h2>Backbone.Collection</h2>
+						<p class="backbone backbone_collection">Collections are simply an ordered set of models.</p>
+						<pre><code>
+  var Song = Backbone.Model.extend({
+     defaults: {
+     	title: '',
+     	artist: ''
+     }
+  });
+
+  var Album = Backbone.Collection.extend({
+    model: Song
+  });
+						</code></pre>
 					</section>
 					<section>
-						<h2>Backbone.Views</h2>
+						<h2>Backbone.View</h2>
+						<p class="backbone backbone_view">Views are used to reflect what your applications' data models look like. They are also used to listen to events and react accordingly.</p>
+						<pre><code>
+  var SearchView = Backbone.View.extend({
+    el: $('#search_container'),
+    events: {
+        "click input[type=button]": "doSearch"
+    },
+    render: function(){
+        var template = _.template( $("#search_template").html() );
+        this.$el.html( template );
+    },
+    doSearch: function( event ){}
+  });
+
+  var search_view = new SearchView().render();
+						</code></pre>
 					</section>
 					<section>
 						<h2>Backbone.Router</h2>
+						<p class="backbone backbone_router">Routers provide methods for routing client-side pages, and connecting them to actions and events.</p>
+						<pre><code>
+  var Workspace = Backbone.Router.extend({
+
+   routes: {
+      "help":                 "help",    // #help
+      "search/:query":        "search",  // #search/ninjas
+      "search/:query/p:page": "search"   // #search/ninjas/p7
+    },
+  
+    help: function() {
+      ...
+    },
+
+    search: function(query, page) {
+      ...
+    }
+});
+						</code></pre>
 					</section>
 					<section>
 						<h2>Our App</h2>

@@ -1,7 +1,6 @@
 /**
- * Blah blah
+ * Create a game object to hold all of our logic...
  */
-
 var game = {
 
     /**
@@ -11,7 +10,8 @@ var game = {
     my_socket_id: 0,
 
     /**
-     * Init the JS!
+     * Do some stuff to initialise our game.
+     * Connect our WebSocket and bind some events in the UI.
      */
     init: function() {
         io.socket = io.connect();
@@ -21,6 +21,7 @@ var game = {
     /**
      * While connected, Socket.IO will listen to the following events emitted
      * by the Socket.IO server, then run the appropriate function.
+     * Also bind some click events using JQuery.
      */
     bindEvents : function() {
         $(".js_create_game").click(game.createGame);

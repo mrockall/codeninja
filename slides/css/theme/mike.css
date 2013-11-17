@@ -31,6 +31,7 @@ body {
   /*color: #444;*/
 }
 .reveal blockquote{
+  width: 80%;
   padding: 40px;
   line-height: 1.6em;
   margin-bottom: 30px;
@@ -162,4 +163,30 @@ body {
  *********************************************/
 .title_slide body{
   background-color: #276448;
+}
+
+/*********************************************
+ * OTHER STYLES
+ *********************************************/
+.reveal .backbone{
+  padding-left: 150px;
+  margin-bottom: 30px;
+  min-height: 100px;
+  text-align: left;
+}
+.reveal .backbone_events{
+  background: url(../../lib/images/backbone_events.png) 10px center no-repeat;
+}
+.reveal .backbone_model{
+  background: url(../../lib/images/backbone_model.png) 10px center no-repeat;
+}
+.reveal .backbone_collection{
+  line-height: 100px;
+  background: url(../../lib/images/backbone_collection.png) 10px center no-repeat;
+}
+.reveal .backbone_view{
+  background: url(../../lib/images/backbone_view.png) 10px center no-repeat;
+}
+.reveal .backbone_router{
+  background: url(../../lib/images/backbone_router.png) 10px center no-repeat;
 }
