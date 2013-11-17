@@ -10,7 +10,8 @@ if(_.isUndefined(app.Models)) app.Models = {};
 app.Models.Game = Backbone.Model.extend({
 
   players_per_room: 2,
-  points_per_round: 1000,
+  points_per_round: 100,
+  number_of_rounds: 4,
 
   defaults: {
     socket_id: 0,
@@ -23,10 +24,11 @@ app.Models.Game = Backbone.Model.extend({
     
     io.socket.on('connected', this.onConnected );
     io.socket.on('host:new_game_created', this.onNewGameCreated );
+    io.socket.on('host:check_answer', this.checkAnswer );
     io.socket.on('player:joined_room', this.playerJoinedRoom );
     io.socket.on('game:start_countdown', this.beginGameCountdown );
     io.socket.on('game:new_round_data', this.newRoundData )
-    io.socket.on('host:check_answer', this.checkAnswer );
+    io.socket.on('game:over', this.endGame );
   },
 
   isHost: function() { return this.get('role') == 'Host'; },
@@ -73,18 +75,24 @@ app.Models.Game = Backbone.Model.extend({
   },
 
   beginGameCountdown: function() {
-    app.Router.navigate('game', {trigger: true, replace: false});
+    app.Router.navigate('game', {trigger: true, replace: true});
   },
 
   getRound: function() {
-    this.set('current_round', this.get('current_round' + 1));
-    io.socket.emit('game:get_round', this.get('game_id'));
+    this.set('current_round', this.get('current_round') + 1);
+
+    if(this.get('current_round') > this.number_of_rounds){
+      io.socket.emit('game:over', this.get('game_id'));
+    } else {
+      io.socket.emit('game:get_round', this.get('game_id'));
+    }
   },
 
   newRoundData: function(data) {
     console.log("== New Round Data ", data);
     this.set('round_answer', data.team);
     this.set('available_points', this.points_per_round);
+    this.set('number_of_player_answers', 0);
     this.trigger('game:render_round_data', data);
   },
 
@@ -100,14 +108,27 @@ app.Models.Game = Backbone.Model.extend({
 
   checkAnswer: function(answer) {
     if(this.isHost()){
+      this.set('number_of_player_answers', this.get('number_of_player_answers') + 1);
+
       if(answer.answer == this.get('round_answer')){
         console.log("== Correct Answer: Award this many points", this.get('available_points'));
         var player = this.Players.getBySocketID(answer.playerId)[0];
         player.give_score(this.get('available_points'));
       }
 
-      // Get another round going..
-      this.getRound();
+      // If everyone has answered this round, new round!
+      if(this.get('number_of_player_answers') == this.Players.length){
+        this.getRound();
+      }
     }
+  },
+
+  forceNextRound: function() {
+    this.getRound();
+  },
+
+  endGame: function() {
+    console.log("== End Game");
+    app.Router.navigate('gameover', {trigger: true, replace: true});
   }
 });

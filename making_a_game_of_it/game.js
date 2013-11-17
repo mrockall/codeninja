@@ -39,6 +39,7 @@ exports.initGame = function(sio, socket){
 
     // Game Events
     gameSocket.on('game:get_round', getRoundData)
+    gameSocket.on('game:over', gameOver)
 }
 
 /* *****************************
@@ -201,6 +202,16 @@ function shuffle(array) {
     }
 
     return array;
+}
+/**
+ * The 'game:over' event has occured.
+ *
+ * Lets send the update to everyone involved in this game.
+ * @param  {Int} game_id The ID of Game.
+ */
+function gameOver(game_id) {
+    console.log('Game Over! #' + game_id);
+    io.sockets.in(game_id).emit('game:over');
 }
 
 var teams = [

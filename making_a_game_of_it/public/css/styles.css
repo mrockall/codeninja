@@ -214,6 +214,17 @@ h3{
 .score_cards li .score{
     min-width: 50px;
 }
+.final_scores{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 32px;
+    line-height: 46px;
+}
+.final_scores .score{
+    color: #276448;
+    margin-right: 10px;
+}
 
 /* #Game Screen - Player
 ================================================== */

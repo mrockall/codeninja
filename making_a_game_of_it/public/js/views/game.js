@@ -73,6 +73,8 @@ app.Views.Game = Backbone.View.extend({
       if(app.Game.isHost()){
         this.render_picture(data.team);
         this.start_round_timer();
+        this.$el.find('.round .current').text(app.Game.get('current_round'));
+        this.$el.find('.round .total').text(app.Game.number_of_rounds);
       } else {
         this.$el.find(".option.tl .inner").text(data.answers[0]);
         this.$el.find(".option.tr .inner").text(data.answers[1]);
@@ -112,6 +114,7 @@ app.Views.Game = Backbone.View.extend({
 
         if (points <= 0)
         {
+          app.Game.forceNextRound();
           clearInterval(this.points_counter);
           return;
         }

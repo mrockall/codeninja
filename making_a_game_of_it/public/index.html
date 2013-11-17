@@ -69,8 +69,18 @@
             <div class="count">5</div>
         </div>
         <div class="picture"></div>
-        <ul class='score_cards'>
-        </ul>
+        <ul class='score_cards'></ul>
+        <div class="round">Round <span class="current"></span> of <span class="total"></span></div>
+    </script>
+
+    <script id="game_over_screen" type="text/template">
+        <div class="game_over">
+            <h1>Game Over</h1>
+            <ul class="final_scores"></ul>
+            <div class="actions">
+                <a href="#" class="js_restart_game">Restart Game</a>
+            </div>
+        </div>
     </script>
 
     <script id="player_scorecard" type="text/template">
@@ -133,6 +143,7 @@
     <script src="/js/views/join.js"></script>
     <script src="/js/views/waiting.js"></script>
     <script src="/js/views/game.js"></script>
+    <script src="/js/views/game_over.js"></script>
 
     <!-- This is our game logic -->
     <script src="/js/main.js"></script>

@@ -7,7 +7,8 @@ app.router = Backbone.Router.extend({
     "create": "create",
     "join": "join",
     "waiting": "waiting",
-    "game": "game"
+    "game": "game",
+    "gameover": "gameover"
   },
 
   index: function() {
@@ -28,5 +29,9 @@ app.router = Backbone.Router.extend({
 
   game: function() {
     new app.Views.Game().render();
+  },
+
+  gameover: function() {
+    new app.Views.GameOver().render();
   }
 });
