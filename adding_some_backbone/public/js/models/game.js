@@ -52,7 +52,7 @@ app.Models.Game = Backbone.Model.extend({
 
     this.Players = new app.Collections.Players();
 
-    Backbone.Events.trigger("game:created");
+    game.trigger("game:created");
   },
 
   /**

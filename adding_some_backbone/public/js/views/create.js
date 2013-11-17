@@ -13,7 +13,7 @@ app.Views.Create = Backbone.View.extend({
     initialize: function() {
       io.socket.emit("host:create_game");
 
-      Backbone.Events.on("game:created", this.game_created, this);
+      app.Game.on("game:created", this.game_created, this);
       
       return this;
     },
