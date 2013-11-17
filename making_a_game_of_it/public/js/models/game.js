@@ -10,8 +10,8 @@ if(_.isUndefined(app.Models)) app.Models = {};
 app.Models.Game = Backbone.Model.extend({
 
   players_per_room: 2,
-  points_per_round: 100,
-  number_of_rounds: 4,
+  points_per_round: 1000,
+  number_of_rounds: 10,
 
   defaults: {
     socket_id: 0,

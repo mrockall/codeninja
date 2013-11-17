@@ -14,7 +14,6 @@ app.Views.GameOver = Backbone.View.extend({
       this.$el.html( this.template() );
 
       if(app.Game.isHost()){
-        this.$el.find(".actions").hide();
 
         var $ul = this.$el.find(".final_scores")
         app.Game.Players.each(_.bind(function(m, i){
@@ -25,8 +24,7 @@ app.Views.GameOver = Backbone.View.extend({
           $ul.append($li);
 
         }, this));
-      } else {
-        this.$el.find(".final_scores").hide();
+
       }
 
       return this;
