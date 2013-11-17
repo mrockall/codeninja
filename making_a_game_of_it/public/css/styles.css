@@ -194,6 +194,10 @@ h3{
     right: 0;
     background-size: 100% 100%;
 }
+.timer{
+    margin: 15px 15px 0 0;
+    text-align: right;
+}
 
 /* #Game Screen - Player
 ================================================== */

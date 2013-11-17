@@ -71,6 +71,7 @@ app.Views.Game = Backbone.View.extend({
     renderRound: function(data) {
       if(app.Game.isHost()){
         this.render_picture(data.team);
+        this.start_round_timer();
       } else {
         this.$el.find(".option.tl .inner").text(data.answers[0]);
         this.$el.find(".option.tr .inner").text(data.answers[1]);
@@ -80,7 +81,6 @@ app.Views.Game = Backbone.View.extend({
     },
 
     render_picture: function(team) {
-      console.log(team);
       var $picture = this.$el.find('.picture'),
           w = $picture.width(),
           h = $picture.height();
@@ -96,5 +96,24 @@ app.Views.Game = Backbone.View.extend({
 
     answer_selected: function(ev) {
       app.Game.playerAnswer($(ev.currentTarget).find(".inner").text());
+    },
+
+    start_round_timer: function() {
+      var $timer_el = this.$el.find('.timer');
+      
+      clearInterval(this.points_counter);
+      this.points_counter = setInterval(_.bind(timer, this), 10);
+
+      function timer()
+      {
+        var points = app.Game.decreaseAvailablePoints();
+        $timer_el.text(points);
+
+        if (points <= 0)
+        {
+          clearInterval(this.points_counter);
+          return;
+        }
+      }
     }
 });

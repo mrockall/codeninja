@@ -10,6 +10,7 @@ if(_.isUndefined(app.Models)) app.Models = {};
 app.Models.Game = Backbone.Model.extend({
 
   players_per_room: 1,
+  points_per_round: 1000,
 
   defaults: {
     socket_id: 0,
@@ -29,6 +30,11 @@ app.Models.Game = Backbone.Model.extend({
   },
 
   isHost: function() { return this.get('role') == 'Host'; },
+
+  decreaseAvailablePoints: function() { 
+    this.set('available_points', this.get('available_points') - 1); 
+    return this.get('available_points');
+  },
 
   onConnected: function() {
     this.set('socket_id', io.socket.socket.sessionid);
@@ -78,6 +84,7 @@ app.Models.Game = Backbone.Model.extend({
   newRoundData: function(data) {
     console.log("== New Round Data ", data);
     this.set('round_answer', data.team);
+    this.set('available_points', this.points_per_round);
     this.trigger('game:render_round_data', data);
   },
 
@@ -94,9 +101,7 @@ app.Models.Game = Backbone.Model.extend({
   checkAnswer: function(answer) {
     if(this.isHost()){
       if(answer.answer == this.get('round_answer')){
-        console.log("Award some points");
-      } else {
-        console.log("How did you get that wrong?");
+        console.log("Award this many points", this.get('available_points'));
       }
 
       // Get another round going..
