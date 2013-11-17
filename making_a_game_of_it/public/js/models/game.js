@@ -18,13 +18,14 @@ app.Models.Game = Backbone.Model.extend({
   },
 
   initialize: function() {
-    _.bindAll(this, 'onConnected', 'onNewGameCreated', 'playerJoinedRoom', 'newRoundData');
+    _.bindAll(this, 'onConnected', 'onNewGameCreated', 'playerJoinedRoom', 'newRoundData', 'checkAnswer');
     
     io.socket.on('connected', this.onConnected );
     io.socket.on('host:new_game_created', this.onNewGameCreated );
     io.socket.on('player:joined_room', this.playerJoinedRoom );
     io.socket.on('game:start_countdown', this.beginGameCountdown );
     io.socket.on('game:new_round_data', this.newRoundData )
+    io.socket.on('host:check_answer', this.checkAnswer );
   },
 
   isHost: function() { return this.get('role') == 'Host'; },
@@ -70,12 +71,36 @@ app.Models.Game = Backbone.Model.extend({
   },
 
   getRound: function() {
+    this.set('current_round', this.get('current_round' + 1));
     io.socket.emit('game:get_round', this.get('game_id'));
   },
 
   newRoundData: function(data) {
     console.log("== New Round Data ", data);
+    this.set('round_answer', data.team);
     this.trigger('game:render_round_data', data);
-    this.set('current_round', this.get('current_round' + 1));
+  },
+
+  playerAnswer: function(answer) {
+    var data = {
+        gameId: this.get("game_id"),
+        playerId: this.get("socket_id"),
+        answer: answer,
+        round: this.get("current_round")
+    };
+    io.socket.emit('player:answer',data);
+  },
+
+  checkAnswer: function(answer) {
+    if(this.isHost()){
+      if(answer.answer == this.get('round_answer')){
+        console.log("Award some points");
+      } else {
+        console.log("How did you get that wrong?");
+      }
+
+      // Get another round going..
+      this.getRound();
+    }
   }
 });

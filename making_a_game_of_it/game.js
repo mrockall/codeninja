@@ -35,6 +35,7 @@ exports.initGame = function(sio, socket){
 
     // Player Events
     gameSocket.on('player:join_game', playerJoinGame);
+    gameSocket.on('player:answer', playerAnswer)
 
     // Game Events
     gameSocket.on('game:get_round', getRoundData)
@@ -134,6 +135,14 @@ function playerJoinGame(data) {
         // Otherwise, send an error message back to the player.
         this.emit('error',{message: "This room does not exist."} );
     }
+}
+
+function playerAnswer(data) {
+    console.log('Player ID: ' + data.playerId + ' answered with: ' + data.answer);
+
+    // The player's answer is attached to the data object.
+    // Emit an event with the answer so it can be checked by the 'Host'
+    io.sockets.in(data.gameId).emit('host:check_answer', data);
 }
 
 /* *****************************

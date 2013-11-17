@@ -15,6 +15,10 @@ app.Views.Game = Backbone.View.extend({
       app.Game.on('game:render_round_data', this.renderRound, this);
     },
 
+    events: {
+      "click .option": "answer_selected"
+    },
+
     render: function() {
       if(app.Game.get('role') == 'Host') {
         this.$el.html( this.host_template() );
@@ -76,6 +80,7 @@ app.Views.Game = Backbone.View.extend({
     },
 
     render_picture: function(team) {
+      console.log(team);
       var $picture = this.$el.find('.picture'),
           w = $picture.width(),
           h = $picture.height();
@@ -86,6 +91,10 @@ app.Views.Game = Backbone.View.extend({
         $picture.height(w);
       }
 
-      $picture.css('background-image', 'url(css/img/' + team + '.png)');
+      $picture.css('background-image', 'url(css/img/' + team.replace(/ /g,"_").toLowerCase() + '.png)');
+    },
+
+    answer_selected: function(ev) {
+      app.Game.playerAnswer($(ev.currentTarget).find(".inner").text());
     }
 });
