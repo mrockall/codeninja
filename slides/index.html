@@ -324,50 +324,244 @@
 						</code></pre>
 					</section>
 					<section>
-						<h3>3) How do we handle rounds within the game?</h3>
+						<h3>3) Setting up the data for each round.</h3>
 					</section>
 					<section>
 						<pre><code>
+  // game.js
+  exports.initGame = function(sio, socket){
+    ...
+    gameSocket.on('game:get_round', getRoundData);
+  }
+
+  function getRoundData(game_id) {
+    var league = teams;
+    league = shuffle(league);
+    team = league[0];
+
+    decoys = league.slice(0,4);
+    decoys = shuffle(decoys);
+
+    // Set up the data object
+    var data = {
+        team: team,
+        answers : decoys
+    };
+
+    io.sockets.in(game_id).emit('game:new_round_data', data);
+  }
 						</code></pre>
 					</section>
 					<section>
-						<h3>4) Setting up the data for each round.</h3>
+						<h3>4) Handling user answers</h3>
 					</section>
 					<section>
 						<pre><code>
+  // views/game.js
+  // Handling the event in game screen
+  app.Views.Game = Backbone.View.extend({
+
+    ...
+
+    events: {
+      "click .option": "answer_selected"
+    },
+
+    ...
+
+    answer_selected: function(ev) {
+      app.Game.playerAnswer($(ev.currentTarget).find(".inner").text());
+    }
+
+    ...
+
+  });
 						</code></pre>
 					</section>
 					<section>
-						<h3>5) Handling user answers</h3>
-					</section>
-					<section>
 						<pre><code>
+  // Passing the answer to the Host
+  app.Models.Game = Backbone.Model.extend({
+
+    ...
+
+    playerAnswer: function(answer) {
+      var data = {
+          gameId: this.get("game_id"),
+          playerId: this.get("socket_id"),
+          answer: answer,
+          round: this.get("current_round")
+      };
+      io.socket.emit('player:answer',data);
+    },
+
+    ...
+
+  }
 						</code></pre>
 					</section>
 					<section>
-						<h3>6) Keeping track of the score</h3>
-					</section>
-					<section>
 						<pre><code>
+  // Check the answer on the Host
+  checkAnswer: function(answer) {
+    if(this.isHost()){
+      this.set('number_of_player_answers', this.get('number_of_player_answers') + 1);
+
+      if(answer.answer == this.get('round_answer')){
+        // Give the Player some points
+      }
+
+      // If everyone has answered this round, new round!
+      if(this.get('number_of_player_answers') == this.Players.length){
+        this.getRound();
+      }
+    }
+  }
 						</code></pre>
 					</section>
 					<section>
-						<h3>7) Showing the score on screen</h3>
+						<h3>5) Keeping track of the score</h3>
 					</section>
 					<section>
 						<pre><code>
+  // Timer in Game view
+  start_round_timer: function() {
+    var $timer_el = this.$el.find('.timer');
+      
+    clearInterval(this.points_counter);
+    this.points_counter = setInterval(_.bind(timer, this), 10);
+
+    function timer()
+    {
+       var points = app.Game.decreaseAvailablePoints();
+      $timer_el.text(points);
+
+      if (points <= 0) {
+        app.Game.forceNextRound();
+        clearInterval(this.points_counter);
+        return;
+      }
+    }
+  }
 						</code></pre>
 					</section>
 					<section>
-						<h3>8) Ending the game</h3>
+						<pre><code>
+  // The Game Model
+  app.Models.Game = Backbone.Model.extend({
+
+    points_per_round: 1000,
+
+    ...
+
+    decreaseAvailablePoints: function() { 
+      this.set('available_points', this.get('available_points') - 1); 
+      return this.get('available_points');
+    },
+
+    ...
+
+    checkAnswer: function(answer) {
+      ...
+      if(answer.answer == this.get('round_answer')){
+        console.log("== Correct Answer: Award this many points", this.get('available_points'));
+        var player = this.Players.getBySocketID(answer.playerId)[0];
+        player.give_score(this.get('available_points'));
+      }
+      ...
+    }
+  });
+						</code></pre>
+					</section>
+					<section>
+						<h3>6) Showing the score on screen</h3>
 					</section>
 					<section>
 						<pre><code>
+  // Called when rendering the Host Game Screen
+  render_player_cards: function() {
+    var $score_cards = this.$el.find('.score_cards')
+        template = $("#player_scorecard").html();
+
+    app.Game.Players.each(_.bind(function(m, i){
+      var $li = $(template);
+      $li.addClass('sckt_' + m.get('socket'));
+      $li.find('.name').text(m.get('name'));
+      $li.find('.score').text(m.get('score'));
+
+      $score_cards.append($li);
+
+      m.on('change:score', this.update_player_score, $li);
+    }, this));
+  },
+
+  // Called any time the score in the model changes
+  update_player_score: function(a) {
+    this.find('.score').text(a.get('score'));
+  }
+						</code></pre>
+					</section>
+					<section>
+						<h3>7) Ending the game</h3>
+					</section>
+					<section>
+						<pre><code>
+  app.Models.Game = Backbone.Model.extend({
+
+    ...
+
+    getRound: function() {
+      this.set('current_round', this.get('current_round') + 1);
+
+      if(this.get('current_round') > this.number_of_rounds){
+        io.socket.emit('game:over', this.get('game_id'));
+      } else {
+        io.socket.emit('game:get_round', this.get('game_id'));
+      }
+    },
+
+    endGame: function() {
+      console.log("== End Game");
+      app.Router.navigate('gameover', {trigger: true, replace: true});
+    }
+  });
 						</code></pre>
 					</section>
 					<section>
 						<h2>Code!</h2>
 					</section>
+				</section>
+				<section>
+					<section>
+						<h2>#4</h2>
+						<h2>Improving our Workflow</h2>
+					</section>
+					<section>
+						<h2>Require.JS</h2>
+					</section>
+					<section>
+						<h2>Improvement in Load Speed</h2>
+					</section>
+					<section>
+						<h2>Grunt</h2>
+					</section>
+					<section>
+						<h2>One JS File</h2>
+					</section>
+					<section>
+						<h2>Bower</h2>
+					</section>
+					<section>
+						<h2>Cloak</h2>
+					</section>
+					<section>
+						<h2>SailsJS</h2>
+					</section>
+				</section>
+				<section data-state="title_slide">
+					<h2>Thanks</h2>
+					<a class="end_slide twitter" href="http://twitter.com/mrockall">@mrockall</a>
+					<a class="end_slide email" href="mailto:mike@exordo.com">mike@exordo.com</a>
 				</section>
 			</div>
 

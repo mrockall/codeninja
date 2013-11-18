@@ -38,8 +38,8 @@ exports.initGame = function(sio, socket){
     gameSocket.on('player:answer', playerAnswer)
 
     // Game Events
-    gameSocket.on('game:get_round', getRoundData)
-    gameSocket.on('game:over', gameOver)
+    gameSocket.on('game:get_round', getRoundData);
+    gameSocket.on('game:over', gameOver);
 }
 
 /* *****************************

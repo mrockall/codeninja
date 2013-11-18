@@ -193,3 +193,20 @@ body {
 .reveal .backbone_router{
   background: url(../../lib/images/backbone_router.png) 10px center no-repeat;
 }
+
+.reveal a.end_slide{
+  display: block;
+  margin: 0 auto;
+  color: white;
+  width: 400px;
+  text-align: left;
+  font-size: 50px;
+  line-height: 100px;
+  padding-left: 130px;
+}
+.reveal a.end_slide.twitter{
+  background: url(../../lib/images/twitter.png) 0 0 no-repeat;
+}
+.reveal a.end_slide.email{
+  background: url(../../lib/images/email.png) 0 0 no-repeat;
+}
