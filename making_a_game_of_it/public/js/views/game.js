@@ -23,11 +23,11 @@ app.Views.Game = Backbone.View.extend({
       if(app.Game.isHost()) {
         this.$el.html( this.host_template() );
         this.render_player_cards();
+        this.countdown();
       } else {
         this.$el.html( this.player_template() );
       }
-
-      this.countdown();
+      
       return this;
     },
 
@@ -55,9 +55,7 @@ app.Views.Game = Backbone.View.extend({
           // Stop the timer and do the callback.
           clearInterval(timer);
           this.$el.find('.countdown').fadeOut();
-          if(app.Game.isHost()){
-            app.Game.getRound(0);
-          }
+          app.Game.getRound();
           return;
         }
 

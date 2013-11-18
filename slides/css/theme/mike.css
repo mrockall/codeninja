@@ -168,6 +168,9 @@ body {
 /*********************************************
  * OTHER STYLES
  *********************************************/
+.reveal pre code {
+  max-height: 600px;
+}
 .reveal .backbone{
   padding-left: 150px;
   margin-bottom: 30px;

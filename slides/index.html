@@ -137,7 +137,7 @@
 				    </code></pre>
 					</section>
 					<section>
-						<h2>Demo!</h2>
+						<h2>Code!</h2>
 					</section>
 				</section>
 
@@ -249,7 +249,11 @@
 						</code></pre>
 					</section>
 					<section>
-						<h2>Our App</h2>
+						<h2>Our Game</h2>
+						<img width="960" height="550" src="lib/images/our_game.png" alt="The Backbone Components in our App">
+					</section>
+					<section>
+						<h2>Code!</h2>
 					</section>
 				</section>
 
@@ -258,8 +262,113 @@
 						<h2>#3</h2>
 						<h2>Making a Game of it</h2>
 					</section>
-				</section>
+					<section>
+						<h2>What Next?</h2>
+						<p>Now we have a pretty nice codebase, we need to add the logic that will power our game...</p>
+						<p>Next we'll take a series of problems or questions and work them into our codebase until the game is completely working!</p>
+					</section>
+					<section>
+						<h2>What is the game?</h2>
+						<img width="960" height="550" src="lib/images/what_is_the_game.png" alt="What is the Game?">
+					</section>
+					<section>
+						<h3>1) How do we start the game on all devices?</h3>
+					</section>
+					<section>
+						<pre><code>
+  // app.Game, models/game.js
 
+  players_per_room: 2 // Set a variable in the model
+
+  playerJoinedRoom: function() {
+    ...
+    if(this.Players.length == this.players_per_room){
+      console.log("== Room limit reached, starting game!");
+
+      io.socket.emit('host:start_countdown', this.get('game_id'));
+    }
+    ...
+  }
+
+  // game.js
+  io.sockets.in(data.gameId).emit('game:start_countdown', data);
+						</code></pre>
+					</section>
+					<section>
+						<h3>2) Setting up a countdown for the first round.</h3>
+					</section>
+					<section>
+						<pre><code>
+  // app.Views.Home, views/home.js
+  countdown: function() {
+    var start_time = 2, $count = $countdown.find(".count");
+
+    $count.text(start_time);
+
+    // Start a 1 second timer
+    var timer = setInterval(_.bind(countItDown, this), 1000);
+
+    // Decrement the displayed timer value on each 'tick'
+    function countItDown(){
+      start_time -= 1
+      if( start_time <= 0 ){
+        // Stop the timer and do the callback.
+        clearInterval(timer);
+        this.$el.find('.countdown').fadeOut();
+        app.Game.getRound();
+        return;
+      }
+      $count.text(start_time);
+    }
+  }
+						</code></pre>
+					</section>
+					<section>
+						<h3>3) How do we handle rounds within the game?</h3>
+					</section>
+					<section>
+						<pre><code>
+						</code></pre>
+					</section>
+					<section>
+						<h3>4) Setting up the data for each round.</h3>
+					</section>
+					<section>
+						<pre><code>
+						</code></pre>
+					</section>
+					<section>
+						<h3>5) Handling user answers</h3>
+					</section>
+					<section>
+						<pre><code>
+						</code></pre>
+					</section>
+					<section>
+						<h3>6) Keeping track of the score</h3>
+					</section>
+					<section>
+						<pre><code>
+						</code></pre>
+					</section>
+					<section>
+						<h3>7) Showing the score on screen</h3>
+					</section>
+					<section>
+						<pre><code>
+						</code></pre>
+					</section>
+					<section>
+						<h3>8) Ending the game</h3>
+					</section>
+					<section>
+						<pre><code>
+						</code></pre>
+					</section>
+					<section>
+						<h2>Code!</h2>
+					</section>
+				</section>
 			</div>
 
 		</div>
