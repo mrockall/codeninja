@@ -27,6 +27,9 @@ body {
 .reveal p{
   line-height: 1.6em;
 }
+.reveal p.small{
+  text-align: 0.5em;
+}
 .reveal p em{
   /*color: #444;*/
 }

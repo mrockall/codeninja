@@ -121,7 +121,7 @@
 					</section>
 					<section>
 						<h2>Our Game</h2>
-						<img width="960" height="500" src="lib/images/our_game.png" alt="Our Game">
+						<img width="960" height="500" src="lib/images/game_architecture.png" alt="Our Game">
 					</section>
 					<section>
 						<h2>Using Sockets.io</h2>
@@ -353,7 +353,65 @@
 						</code></pre>
 					</section>
 					<section>
-						<h3>4) Handling user answers</h3>
+						<h3>4) Rendering the rounds on screen.</h3>
+					</section>
+					<section>
+						<pre><code>
+  // Reacting to the game:new_round_data event
+  app.Models.Game = Backbone.Model.extend({
+
+    initialize: function() {
+      ...
+      io.socket.on('game:new_round_data', this.newRoundData );
+    },
+
+    ...
+
+    newRoundData: function() {
+      console.log("== New Round Data ", data);
+      this.set('round_answer', data.team);
+      this.set('available_points', this.points_per_round);
+      this.set('number_of_player_answers', 0);
+      this.trigger('game:render_round_data', data);
+    }
+
+    ...
+
+   });
+
+						</code></pre>
+					</section>
+					<section>
+						<pre><code>
+  // Rendering the round in the Game View
+  app.Views.Game = Backbone.View.extend({
+
+    initialize: function() {
+      app.Game.on('game:render_round_data', this.renderRound, this);
+    },
+
+    ...
+
+    renderRound: function() {
+      if(app.Game.isHost()){
+        this.render_picture(data.team);
+        this.start_round_timer();
+        this.$el.find('.round .current').text(app.Game.get('current_round'));
+        this.$el.find('.round .total').text(app.Game.number_of_rounds);
+      } else {
+        this.$el.find(".option.tl .inner").text(data.answers[0]);
+        this.$el.find(".option.tr .inner").text(data.answers[1]);
+        this.$el.find(".option.bl .inner").text(data.answers[2]);
+        this.$el.find(".option.br .inner").text(data.answers[3]);
+      }
+    },
+
+    ...
+  });
+						</code></pre>
+					</section>
+					<section>
+						<h3>5) Handling user answers</h3>
 					</section>
 					<section>
 						<pre><code>
@@ -420,7 +478,7 @@
 						</code></pre>
 					</section>
 					<section>
-						<h3>5) Keeping track of the score</h3>
+						<h3>6) Keeping track of the score</h3>
 					</section>
 					<section>
 						<pre><code>
@@ -474,7 +532,7 @@
 						</code></pre>
 					</section>
 					<section>
-						<h3>6) Showing the score on screen</h3>
+						<h3>7) Showing the score on screen</h3>
 					</section>
 					<section>
 						<pre><code>
@@ -502,7 +560,7 @@
 						</code></pre>
 					</section>
 					<section>
-						<h3>7) Ending the game</h3>
+						<h3>8) Ending the game</h3>
 					</section>
 					<section>
 						<pre><code>
@@ -537,25 +595,76 @@
 						<h2>Improving our Workflow</h2>
 					</section>
 					<section>
-						<h2>Require.JS</h2>
+						<h3>We make too many requests on initial load</h3>
+						<img height="250" width="653" src="lib/images/too_many_requests.png" alt="Too Many Request"/>
+						<p>Old Code: DOMContentLoaded: 180ms</p>
 					</section>
 					<section>
-						<h2>Improvement in Load Speed</h2>
+						<h2>Require.JS</h2>
+						<img height="150" width="150" src="lib/images/require_logo.png" alt="Require Logo"/>
+						<blockquote>RequireJS is a JavaScript file and module loader. Using a modular script loader like RequireJS will improve the speed and quality of your code.</blockquote>
+					</section>
+					<section>
+						<h2>Improvement in initial load speed</h2>
+						<img height="250" width="652" src="lib/images/async_load_time.png" alt="Async with Require"/>
+						<p>With RequireJS: DOMContentLoaded: 94ms</p>
+					</section>
+					<section>
+						<h2>35 Requests?</h2>
+						<img height="513" width="907" src="lib/images/thirty_five_requests.png" alt="35 Requests?"/>
 					</section>
 					<section>
 						<h2>Grunt</h2>
+						<img height="150" width="150" src="lib/images/grunt_logo.png" alt="Grunt Logo"/>
+						<blockquote>
+							 The less work you have to do when performing repetitive tasks like minification, compilation, unit testing, linting, etc, the easier your job becomes
+						</blockquote>
+					</section>
+					<section>
+						<pre><code>
+  // Project configuration.
+  grunt.initConfig({
+
+    pkg: grunt.file.readJSON('package.json'),
+
+    requirejs: {
+      compile: {
+        options: {
+          name : 'main',
+          baseUrl: "public/js/",
+          mainConfigFile: "public/js/main.js",
+          out: "public/build/game.js",
+          wrap: false
+        }
+      }
+    }
+
+  });
+
+  // Load the Grunt tasks
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
+
+  // Default task(s).
+  grunt.registerTask('default', ['requirejs']);
+						</code></pre>
 					</section>
 					<section>
 						<h2>One JS File</h2>
-					</section>
-					<section>
-						<h2>Bower</h2>
+						<img height="513" width="907" src="lib/images/optimised_game.png" alt="35 Requests?"/>
 					</section>
 					<section>
 						<h2>Cloak</h2>
+						<blockquote>
+							Cloak is a <em>library for multiplayer HTML5 games</em> that handles client/server messaging, room/lobby management, and the fiddly edge cases that you don’t want to think about. It’s the plumbing you don’t want to fret over when you’re too busy designing your game.
+						</blockquote>
+						<p>Greg Smith <a href="http://twitter.com/_gsmith">(@_gsmith)</a>, <a href="https://github.com/incompl/cloak">Github</a></p>
 					</section>
 					<section>
 						<h2>SailsJS</h2>
+						<img height="303" width="800" src="lib/images/sails_octopus.png" alt="Sails JS Logo"/>
+						<blockquote>
+							Sails.js makes it easy to build custom, enterprise-grade Node.js apps.
+						</blockquote>
 					</section>
 				</section>
 				<section data-state="title_slide">
