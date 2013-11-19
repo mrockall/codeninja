@@ -1,0 +1,19 @@
+{
+  "name": "improving_our_workflow",
+  "main": "index.js",
+  "version": "0.0.0",
+  "authors": [
+    "Mike Rockall <mrockall@gmail.com>"
+  ],
+  "description": "Final Part of Code Ninja talk",
+  "license": "MIT",
+  "homepage": "http://github.com/mrockall/codeninja",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ]
+}

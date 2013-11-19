@@ -1,0 +1,264 @@
+/*
+* Game
+* Copyright 2013, Game
+* October 2013
+* Author:  Mike Rockall;
+* Email: mike@exordo.ie
+*/
+
+/*  Swatches
+==================================================
+Bright Green = #94c13d
+
+/* #Site Styles
+================================================== */
+
+html, body {
+    background-color: #303030;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+}
+h1{
+    font-size: 90px;
+    line-height: 80px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+}
+h1 .line_one{
+    font-size: 110px;
+}
+h3{
+    text-transform: uppercase;
+    font-size: 30px;
+    line-height: 40px;
+    border-bottom: 2px solid #444;
+}
+#container, .page_container{
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.game_details{
+    margin: 30px 0;
+}
+
+/* #Structure
+================================================== */
+.container{
+    height: 100%;
+    width: 100%;
+    max-width: 450px;
+    margin: 40px auto 0;
+    padding: 0 15px;
+    font-size: 17px;
+    line-height: 28px;
+    text-align: justify;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.container p{
+    color: #b9b9b9;
+}
+.container .center{
+    text-align: center;
+}
+
+/* #Join Form
+================================================== */
+.join_form{
+    margin: 30px auto;
+}
+.join_form input {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    margin: 0 auto 30px;
+    width: 100%;
+    max-width: 400px;
+    font-family: 'Karla', sans-serif;
+    color: #ECFFE0;
+    font-weight: 300;
+    font-size: 1.4em;
+    border: 1px dotted white;
+    border-width: 0 0 1px;
+    background: transparent;
+
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.join_form input:hover, .join_form input:focus{
+    background: #353535;
+    outline: 0 none;
+}
+
+/* #Actions
+================================================== */
+.actions{
+    text-align: center;
+}
+.actions a, input[type="submit"]{
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    color: #fff;
+    font-size: 18px;
+    line-height: 30px;
+    background-color: #276448;
+    border-bottom: solid 4px #193f2e;
+    text-decoration: none;
+    padding: 8px 15px;
+    margin: 0 auto 20px;
+
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.actions a:active, input[type="submit"]:active {
+    transform: scale(0.97);
+    -webkit-transform: scale(0.97);
+}
+.actions a:hover, input[type="submit"]:hover {
+    background-color: #358962;
+}
+
+/* #Players List
+================================================== */
+.players{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.players li{
+    color: #b9b9b9;
+}
+
+/* #Game Styles
+================================================== */
+.countdown{
+    display: none;
+    position: absolute;
+    height: 50%;
+    width: 80%;
+    max-width: 450px;
+    max-height: 300px;
+    margin: auto;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    text-align: center;
+    font-size: 36px;
+}
+.countdown .count{
+    line-height: 130px;
+    font-size: 80px;
+    opacity: 1;
+}
+.countdown .count.huge{
+    opacity: 0;
+    transform: scale(1.4);
+    -webkit-transform: scale(1.4);
+
+  -webkit-transition: all 1s ease-out;
+          transition: all 1s ease-out; 
+}
+.picture{
+    position: absolute;
+    height: 80%;
+    width: 80%;
+    max-width: 500px;
+    max-height: 500px;
+    margin: auto;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    background-size: 100% 100%;
+}
+.timer{
+    margin: 15px 15px 0 0;
+    text-align: right;
+}
+.score_cards{
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+.score_cards li{
+    font-size: 20px;
+    margin: 10px 0;
+}
+.score_cards li .score{
+    min-width: 50px;
+}
+.final_scores{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 32px;
+    line-height: 46px;
+}
+.final_scores .score{
+    color: #276448;
+    margin-right: 10px;
+}
+
+/* #Game Screen - Player
+================================================== */
+.choices{
+    height: 100%;
+    width: 100%;
+}
+.option{
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    display: table;
+    font-size: 2em;
+}
+.option.tl{
+    top: 0;
+}
+.option.tr{
+    top: 25%;
+}
+.option.bl{
+    top: 50%;
+}
+.option.br{
+    top: 75%;
+}
+.option .inner{
+    display: table-cell; 
+    vertical-align: middle; 
+    text-align: center; 
+    padding: 0 15px;
+}
