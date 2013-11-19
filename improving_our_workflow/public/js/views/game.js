@@ -7,8 +7,9 @@ define([
   'views/_page',
 
   'text!templates/game_host.html',
-  'text!templates/game_player.html'
-], function(namespace, $, _, Backbone, Page, hostTemplate, playerTemplate){
+  'text!templates/game_player.html',
+  'text!templates/player_card.html'
+], function(namespace, $, _, Backbone, Page, hostTemplate, playerTemplate, playerCard){
 
   // Shorthand the app
   var app = namespace.app;
@@ -19,20 +20,8 @@ define([
    */
   return Page.extend({
     page_name: 'game_screen',
-    raw_template: template
-  });    
-});
 
-/**
- * Backbone.View
- * The Game Screen
- */
-app.Views.Game = Backbone.View.extend({
-    el: "#container",
-    host_template: _.template( $( '#host_game_screen' ).html() ),
-    player_template: _.template( $( '#player_game_screen' ).html() ),
-
-    initialize: function() {
+    _pageInit: function() {
       app.Game.on('game:render_round_data', this.renderRound, this);
     },
 
@@ -40,16 +29,19 @@ app.Views.Game = Backbone.View.extend({
       "click .option": "answer_selected"
     },
 
-    render: function() {
+    template: function() {
+      if(app.Game.isHost()){
+        return _.template(hostTemplate);
+      } else {
+        return _.template(playerTemplate);
+      }
+    },
+
+    _renderPageContent: function() {
       if(app.Game.isHost()) {
-        this.$el.html( this.host_template() );
         this.render_player_cards();
         this.countdown();
-      } else {
-        this.$el.html( this.player_template() );
       }
-      
-      return this;
     },
 
     countdown: function() {
@@ -142,7 +134,7 @@ app.Views.Game = Backbone.View.extend({
 
     render_player_cards: function() {
       var $score_cards = this.$el.find('.score_cards')
-          template = $("#player_scorecard").html();
+          template = playerCard;
 
       app.Game.Players.each(_.bind(function(m, i){
         var $li = $(template);
@@ -159,4 +151,6 @@ app.Views.Game = Backbone.View.extend({
     update_player_score: function(a) {
       this.find('.score').text(a.get('score'));
     }
+  });  
+
 });

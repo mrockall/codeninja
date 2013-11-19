@@ -14,11 +14,14 @@ define([
 
     initialize: function(params) {
       this.$content = params.$content;
-      this.template = _.template(this.raw_template);
       document.title = this.page_title;
 
       this._pageInit(params);
       return this;
+    },
+
+    template: function() {
+      return _.template(this.raw_template);
     },
 
     _pageInit: function(){},
@@ -46,4 +49,4 @@ define([
     }
   });
 
-});
+}); 

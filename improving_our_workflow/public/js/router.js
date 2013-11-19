@@ -6,8 +6,9 @@ define([
   'views/create',
   'views/join',
   'views/waiting',
-  'views/game'
-], function (namespace, Backbone, HomePage, CreatePage, JoinPage, WaitingPage, GamePage) {
+  'views/game',
+  'views/game_over'
+], function (namespace, Backbone, HomePage, CreatePage, JoinPage, WaitingPage, GamePage, GameOverPage) {
 
   // Shorthand the app
   var app = namespace.app, obj = {};
@@ -22,7 +23,8 @@ define([
       "create_page" : CreatePage,
       "join_page" : JoinPage,
       "waiting_page" : WaitingPage,
-      "game_page" : GamePage
+      "game_page" : GamePage,
+      "game_over_page" : GameOverPage
     },
 
     routes: {
@@ -52,11 +54,10 @@ define([
 
     game: function() {
       this.showPage('game_page');
-      new app.Views.Game().render();
     },
 
     gameover: function() {
-      new app.Views.GameOver().render();
+      this.showPage('game_over_page');
     },
 
     showPage: function(page_name, params) {

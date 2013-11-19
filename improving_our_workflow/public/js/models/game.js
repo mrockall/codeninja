@@ -15,7 +15,7 @@ define([
    */
   obj.Game = Backbone.Model.extend({
 
-    players_per_room: 2,
+    players_per_room: 1,
     points_per_round: 1000,
     number_of_rounds: 10,
 

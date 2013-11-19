@@ -1,18 +1,26 @@
-// Set up some references
-var app = app || {};
-if(_.isUndefined(app.Views)) app.Views = {};
+define([
+  'app',
+  'jquery',
+  'underscore',
+  'backbone',
 
-/**
- * Backbone.View
- * Waiting Screen
- */
-app.Views.GameOver = Backbone.View.extend({
-    el: "#container",
-    template: _.template( $( '#game_over_screen' ).html() ),
+  'views/_page',
 
-    render: function() {
-      this.$el.html( this.template() );
+  'text!templates/game_over.html'
+], function(namespace, $, _, Backbone, Page, template){
 
+  // Shorthand the app
+  var app = namespace.app;
+
+  /**
+   * Backbone.View
+   * Waiting Screen
+   */
+  return Page.extend({
+    page_name: 'game_over_screen',
+    raw_template: template,
+
+    _renderPageContent: function() {
       if(app.Game.isHost()){
 
         var $ul = this.$el.find(".final_scores")
@@ -24,9 +32,7 @@ app.Views.GameOver = Backbone.View.extend({
           $ul.append($li);
 
         }, this));
-
       }
-
-      return this;
     }
+  });    
 });

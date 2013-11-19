@@ -6,7 +6,7 @@ define([
 
   'views/_page',
 
-  'text!templates/join.html'
+  'text!templates/waiting.html'
 ], function(namespace, $, _, Backbone, Page, template){
 
   // Shorthand the app
